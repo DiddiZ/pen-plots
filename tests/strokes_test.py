@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 from numpy.testing import assert_array_almost_equal, assert_raises
-from pen_plots.strokes import concat, translate, scale, rotate
+from pen_plots.strokes import concat, translate, scale, rotate, circle
 
 
 class Test_Concatenation(unittest.TestCase):
@@ -65,3 +65,22 @@ class Test_Transformations(unittest.TestCase):
         expected = [[0.0, 0.0], [0.0, 1.0], [-1.0, 1.0], [-1.0, 0.0], [0.0, 0.0]]
 
         assert_array_almost_equal(rotated, expected)
+
+
+class Test_Shapes(unittest.TestCase):
+    def test_circle(self):
+        stroke = circle(8)
+
+        expected = [  # Basic octagon
+            [1.0, 0.0], [np.sqrt(2) / 2, np.sqrt(2) / 2], [0.0, 1.0], [-np.sqrt(2) / 2, np.sqrt(2) / 2], [-1.0, 0.0],
+            [-np.sqrt(2) / 2, -np.sqrt(2) / 2], [0.0, -1.0], [np.sqrt(2) / 2, -np.sqrt(2) / 2], [1.0, 0.0]
+        ]
+
+        assert_array_almost_equal(stroke, expected)
+
+    def test_circle_arc(self):
+        stroke = circle(2, 0, np.pi / 2)
+
+        expected = [[1.0, 0.0], [np.sqrt(2) / 2, np.sqrt(2) / 2], [0.0, 1.0]]
+
+        assert_array_almost_equal(stroke, expected)
