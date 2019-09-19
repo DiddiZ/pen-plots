@@ -1,7 +1,28 @@
 import unittest
 import numpy as np
-from numpy.testing import assert_array_almost_equal
-from pen_plots.strokes import translate, scale, rotate
+from numpy.testing import assert_array_almost_equal, assert_raises
+from pen_plots.strokes import concat, translate, scale, rotate
+
+
+class Test_Concatenation(unittest.TestCase):
+    def test_concat(self):
+        strokes = [
+            np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]),
+            np.array([[1.0, 1.0], [0.0, 1.0], [0.0, 0.0]]),
+        ]
+
+        concatenated = concat(strokes)
+        expected = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0], [0.0, 0.0]]
+
+        assert_array_almost_equal(concatenated, expected)
+
+    def test_concat_error(self):
+        strokes = [
+            np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]),
+            np.array([[0.0, 1.0], [0.0, 0.0]]),  # Does not start with last end point
+        ]
+        with assert_raises(ValueError):
+            concat(strokes)
 
 
 class Test_Transformations(unittest.TestCase):
