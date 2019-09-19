@@ -9,7 +9,7 @@ def affine_transformation(strokes, rotation=np.eye(2), translation=0):
     ----------
     strokes : stroke or list of strokes
         Stroke(s) to be transformed.
-    A : array_like (2, 2)
+    rotation : array_like (2, 2)
         Rotation matrix.
     translation : scalar or array_like (2,)
         Added constant.

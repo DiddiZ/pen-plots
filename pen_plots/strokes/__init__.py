@@ -7,4 +7,4 @@ strokes: List of strokes.
 
 from pen_plots.strokes.strokes import concat
 from pen_plots.strokes.transformation import affine_transformation, translate, scale, rotate
-from pen_plots.strokes.shapes import circle
+from pen_plots.strokes.shapes import circle, rectangle, rounded_rectangle
