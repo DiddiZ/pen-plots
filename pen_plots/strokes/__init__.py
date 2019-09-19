@@ -5,6 +5,6 @@ stroke:  ndarray of points with shape (N, 2) which is intended to be plotted wit
 strokes: List of strokes.
 """
 
-from pen_plots.strokes.strokes import concat
+from pen_plots.strokes.strokes import bounding_box, concat
 from pen_plots.strokes.transformation import affine_transformation, translate, scale, rotate
 from pen_plots.strokes.shapes import circle, rectangle, rounded_rectangle

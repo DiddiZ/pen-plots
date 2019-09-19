@@ -3,6 +3,31 @@ import numpy as np
 from numpy.testing import assert_array_almost_equal, assert_raises
 
 
+class Test_BoundingBoxes(unittest.TestCase):
+    def test_bounding_box_stroke(self):
+        from pen_plots.strokes import bounding_box
+
+        stroke = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0], [0.0, 0.0]])
+
+        bbox = bounding_box(stroke)
+        expected = [[0.0, 0.0], [1.0, 1.0]]
+
+        assert_array_almost_equal(bbox, expected)
+
+    def test_bounding_box_strokes(self):
+        from pen_plots.strokes import bounding_box
+
+        strokes = [
+            np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]),
+            np.array([[1.0, 1.0], [0.0, 1.0], [0.0, 0.0]]),
+        ]
+
+        bbox = bounding_box(strokes)
+        expected = [[0.0, 0.0], [1.0, 1.0]]
+
+        assert_array_almost_equal(bbox, expected)
+
+
 class Test_Concatenation(unittest.TestCase):
     def test_concat(self):
         from pen_plots.strokes import concat
