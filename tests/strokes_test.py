@@ -102,6 +102,26 @@ class Test_Transformations(unittest.TestCase):
 
         assert_array_almost_equal(rotated, expected)
 
+    def test_scale_to_fit(self):
+        from pen_plots.strokes import scale_to_fit
+
+        stroke = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0], [0.0, 0.0]])
+
+        scaled = scale_to_fit(stroke, min_width=2, max_height=0.5)
+        expected = [[0.0, 0.0], [2.0, 0.0], [2.0, 0.5], [0.0, 0.5], [0.0, 0.0]]
+
+        assert_array_almost_equal(scaled, expected)
+
+    def test_scale_to_fit_no_change(self):
+        from pen_plots.strokes import scale_to_fit
+
+        stroke = np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0], [0.0, 0.0]])
+
+        scaled = scale_to_fit(stroke, min_width=0, min_height=0, max_width=2, max_height=2)
+        expected = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0], [0.0, 0.0]]
+
+        assert_array_almost_equal(scaled, expected)
+
 
 class Test_Shapes(unittest.TestCase):
     def test_circle(self):

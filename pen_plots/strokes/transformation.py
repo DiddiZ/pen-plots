@@ -1,4 +1,5 @@
 import numpy as np
+from pen_plots.strokes import bounding_box
 
 
 def affine_transformation(strokes, rotation=np.eye(2), translation=0):
@@ -66,3 +67,25 @@ def rotate(strokes, angle):
     See affine_transformation for details.
     """
     return affine_transformation(strokes, rotation=rotation_matrix(angle))
+
+
+def scale_to_fit(strokes, min_width=None, max_width=None, min_height=None, max_height=None):
+    """
+    Returns the scaling matrix corresponding to the given scale_factor.
+    """
+    # Compute dimension
+    bbox_min, bbox_max = bounding_box(strokes)
+    width, height = bbox_max - bbox_min
+
+    # Determine scaling facor
+    c = [1, 1]
+    if min_width is not None and width < min_width:
+        c[0] = min_width / width
+    elif max_width is not None and width > max_width:
+        c[0] = max_width / width
+    if min_height is not None and height < min_height:
+        c[1] = min_height / height
+    elif max_height is not None and height > max_height:
+        c[1] = max_height / height
+
+    return affine_transformation(strokes, rotation=np.diag(c))
