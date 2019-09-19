@@ -8,7 +8,7 @@ from pen_plots.fonts import Glyph
 with open(Path(__file__).parent / "hershey-occidental.json", "r") as read_file:
     glyphs_by_hershey_code = {
         glyph['charcode']: Glyph(
-            lines=[np.array(l) for l in glyph["lines"]],
+            lines=[np.array(l) * [1, -1] for l in glyph["lines"]],  # Flip y-axis
             left=glyph["left"],
             right=glyph["right"],
         )
