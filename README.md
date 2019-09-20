@@ -35,5 +35,5 @@ It asks that the following be kept in any distribution derived from the work of 
 ## Acknowledgements
 
 * [Stewart C. Russell](https://github.com/scruss) for providing the [Hershey fonts in a readable format](https://github.com/scruss/python-hershey) as well [a nice rendering of all glyphs](http://scruss.com/wordpress/wp-content/uploads/2014/05/hershey_samples.pdf).
-
 * [Lawrence D'Oliveiro](https://github.com/ldo) for providing a [mapping of unicode to Hershey codes](https://github.com/scruss/python-hershey).
+* [Scryfall](https://scryfall.com/) for their [excellent API](https://scryfall.com/docs/api).
