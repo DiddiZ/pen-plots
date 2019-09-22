@@ -33,8 +33,32 @@ class Test_Glyphs(unittest.TestCase):
         import pen_plots.fonts.hershey as hershey
         from pen_plots.fonts import glyphs_to_strokes
 
-        strokes = glyphs_to_strokes([hershey.glyph_by_char('A', font='rowmans')])
+        strokes = glyphs_to_strokes(
+            [hershey.glyph_by_char('A', font='rowmans')], font_size=21 * 72 / 25.4, alignment='left'
+        )
         expected = [[[9, 12], [1, -9]], [[9, 12], [17, -9]], [[4, -2], [14, -2]]]  # A
+
+        assert_array_almost_equal(strokes, expected)
+
+    def test_glyphs_to_strokes_align_right(self):
+        import pen_plots.fonts.hershey as hershey
+        from pen_plots.fonts import glyphs_to_strokes
+
+        strokes = glyphs_to_strokes(
+            [hershey.glyph_by_char('A', font='rowmans')], font_size=21 * 72 / 25.4, alignment='right'
+        )
+        expected = [[[-9, 12], [-17, -9]], [[-9, 12], [-1, -9]], [[-14, -2], [-4, -2]]]  # A
+
+        assert_array_almost_equal(strokes, expected)
+
+    def test_glyphs_to_strokes_align_center(self):
+        import pen_plots.fonts.hershey as hershey
+        from pen_plots.fonts import glyphs_to_strokes
+
+        strokes = glyphs_to_strokes(
+            [hershey.glyph_by_char('A', font='rowmans')], font_size=21 * 72 / 25.4, alignment='center'
+        )
+        expected = [[[0, 12], [-8, -9]], [[0, 12], [8, -9]], [[-5, -2], [5, -2]]]  # A
 
         assert_array_almost_equal(strokes, expected)
 

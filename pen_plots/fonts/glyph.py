@@ -1,12 +1,12 @@
 import numpy as np
 from collections import namedtuple
-from pen_plots.strokes import affine_transformation, bounding_box, translate
+from pen_plots.strokes import affine_transformation, bounding_box, translate, scale
 
 # A glyph consists of a list of lines as well as horizontal margins.
 Glyph = namedtuple("Glyph", ["lines", "left", "right"])
 
 
-def glyphs_to_strokes(glyphs):
+def glyphs_to_strokes(glyphs, font_size=21, alignment='left'):
     """
     Converts a list of glyphs to strokes. Glyphs are placed from left to right, spaced according to their margins.
 
@@ -18,7 +18,14 @@ def glyphs_to_strokes(glyphs):
         strokes.extend(translate(glyph.lines, offset - glyph.left, 0))
         offset += glyph.right - glyph.left
 
-    return strokes
+    if alignment == 'left':  # Align left-most point to lie of y-axis
+        pass
+    elif alignment == 'right':  # Align right-most point to lie of y-axis
+        strokes = translate(strokes, -offset, 0)
+    elif alignment == 'center':  # Align center point to lie on y-axis
+        strokes = translate(strokes, -offset / 2, 0)
+
+    return scale(strokes, 25.4 / 72 * font_size / 21)
 
 
 def combine_glyphs(*glyphs):
