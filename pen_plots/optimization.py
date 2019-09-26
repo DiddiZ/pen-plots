@@ -1,20 +1,29 @@
 import numpy as np
 
 
-def optimize_stroke_order(strokes, start_point=(0, 0), stroke_join_threshold=1e-3):
+def merge_strokes(strokes):
+    from pen_plots.strokes import to_strokes
+    from shapely.geometry import MultiLineString
+    from shapely.ops import linemerge
+
+    merged = linemerge(MultiLineString(strokes))
+    if not hasattr(merged, '__iter__'):  # Result is a single linestring instead of a MultiLineString
+        merged = [merged]
+
+    return to_strokes(merged)
+
+
+def optimize_stroke_order(strokes, start_point=(0, 0)):
     """
-    Optimizes stroke order for plotting.
+    Optimizes stroke order for plotting to reduce travel distance greedily.
 
-    Joins strokes whenever possible. May reverse strokes and start closed loops at arbitrary points.
-
-    Reduces travel distances greedily.
+    May reverse strokes and start closed loops at arbitrary points.
     """
 
     # Create list of possible stroke starting points
     points = []
     points_meta = []
     for i, stroke in enumerate(strokes):
-        print(i, stroke)
         if np.array_equal(stroke[0], stroke[-1]):  # Stroke is closed loop
             # Stroke may start at any point
             points.extend(stroke[0:-1])
@@ -52,13 +61,7 @@ def optimize_stroke_order(strokes, start_point=(0, 0), stroke_join_threshold=1e-
     opt_strokes = []
     for _ in range(len(strokes)):
         stroke = closest_stoke(pos)
-        travel_dist = np.linalg.norm(stroke[0] - pos)
-
-        if travel_dist <= stroke_join_threshold and len(opt_strokes):
-            opt_strokes[-1] = np.concatenate([opt_strokes[-1], stroke[1:]])
-        else:
-            opt_strokes.append(stroke)
-
+        opt_strokes.append(stroke)
         pos = stroke[-1]
 
     return opt_strokes

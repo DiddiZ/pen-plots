@@ -1,6 +1,15 @@
 import numpy as np
 
 
+def to_strokes(lines):
+    """
+    Converts an iterable of points collectios to a list of strokes.
+
+    Works as long as the point collection can be transformed to a numpy array, e.g. lists and shapely MultiLineStrings.
+    """
+    return [np.array(line) for line in lines]
+
+
 def concat(strokes):
     """
     Concatenates multiple strokes.
