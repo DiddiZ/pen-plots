@@ -48,3 +48,17 @@ def bounding_box(strokes):
         np.min(strokes, axis=0),
         np.max(strokes, axis=0),
     ])
+
+
+def merge_strokes(strokes):
+    """
+    Merges strokes where possible.
+    """
+    from shapely.geometry import MultiLineString
+    from shapely.ops import linemerge
+
+    merged = linemerge(MultiLineString(strokes))
+    if not hasattr(merged, '__iter__'):  # Result is a single linestring instead of a MultiLineString
+        merged = [merged]
+
+    return to_strokes(merged)
