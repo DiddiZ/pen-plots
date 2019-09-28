@@ -1,5 +1,5 @@
 import numpy as np
-from pen_plots.strokes import translate, rounded_rectangle, circle, concat, rectangle, bounding_box, scale_to_fit
+from pen_plots.strokes import to_strokes, translate, rounded_rectangle, circle, concat, rectangle, bounding_box, scale_to_fit
 from pen_plots.fonts import glyphs_to_strokes
 from pen_plots.mtg.glyphs import line_to_glyphs
 from textwrap import wrap
@@ -29,6 +29,15 @@ def vectorize_card(card_data):
         toughness=card_data.get("toughness"),
         loyalty=card_data.get("loyalty"),
     )
+
+
+def difference(strokes, area):
+    """
+    Computes set difference of a list of strokes and an area specified by a stroke.
+    """
+    from shapely.geometry import Polygon, MultiLineString
+
+    return to_strokes(MultiLineString(strokes).difference(Polygon(area)))
 
 
 def create_card(card_title, card_type, mana_cost=None, oracle_text=None, power=None, toughness=None, loyalty=None):
@@ -128,26 +137,12 @@ def create_card(card_title, card_type, mana_cost=None, oracle_text=None, power=N
         pt_bar_bbox = None
 
     # Text box
+    text_box = translate(rectangle(x_text_right - x_text_left, y_text_top - y_text_bottom), x_text_left, y_text_bottom)
     if pt_bar_bbox is None:
-        strokes.append(
-            translate(rectangle(x_text_right - x_text_left, y_text_top - y_text_bottom), x_text_left, y_text_bottom)
-        )
+        strokes.append(text_box)
     else:
         # Draw around P/T bar
-        strokes.append(
-            np.array(
-                [
-                    [
-                        pt_bar_bbox[0, 0] + (1 + np.cos(9 / 8 * np.pi)) * (pt_bar_bbox[1, 1] - pt_bar_bbox[0, 1]) / 2,
-                        y_text_bottom
-                    ],
-                    [x_text_left, y_text_bottom],
-                    [x_text_left, y_text_top],
-                    [x_text_right, y_text_top],
-                    [x_text_right, pt_bar_bbox[1, 1]],
-                ]
-            )
-        )
+        strokes.extend(difference([text_box], pt_bar))
 
     # Mana Cost
     if len(mana_cost) > 0:
