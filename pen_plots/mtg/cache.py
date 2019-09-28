@@ -59,9 +59,9 @@ def download_cached(url, file_name=None):
         logging.info('Downloading %s' % file_name)
 
         # Sleep to ensure 50ms delay between Scryfall API calls.
-        if time.time < last_scryfall_api_call + scryfall_api_call_delay:
-            time.sleep(last_scryfall_api_call + scryfall_api_call_delay - time.time)
-        last_scryfall_api_call = time.time
+        if time.time() < last_scryfall_api_call + scryfall_api_call_delay:
+            time.sleep(last_scryfall_api_call + scryfall_api_call_delay - time.time())
+        last_scryfall_api_call = time.time()
 
         download(url, file_path)
     else:
