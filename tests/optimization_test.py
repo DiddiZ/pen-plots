@@ -38,7 +38,7 @@ class Test_Shapely_Conversion(unittest.TestCase):
 
 class Test_Optimization(unittest.TestCase):
     def test_merge_simple(self):
-        from pen_plots.optimization import merge_strokes
+        from pen_plots.strokes import merge_strokes
 
         strokes = [  # Two strokes which can be joined
             np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]),
@@ -49,7 +49,7 @@ class Test_Optimization(unittest.TestCase):
         assert_array_almost_equal(merge_strokes(strokes), expected)
 
     def test_merge_reverse(self):
-        from pen_plots.optimization import merge_strokes
+        from pen_plots.strokes import merge_strokes
 
         strokes = [  # Two strokes which can be joined, but one must be reversed
             np.array([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]),
@@ -60,7 +60,7 @@ class Test_Optimization(unittest.TestCase):
         assert_array_almost_equal(merge_strokes(strokes), expected)
 
     def test_optimize_order(self):
-        from pen_plots.optimization import optimize_stroke_order
+        from pen_plots import optimize_stroke_order
 
         strokes = [
             np.array([[1.0, 0.0], [2.0, 0.0]]),
@@ -77,7 +77,7 @@ class Test_Optimization(unittest.TestCase):
             assert_array_almost_equal(optimized[i], expected[i])
 
     def test_optimize_order_loop(self):
-        from pen_plots.optimization import optimize_stroke_order
+        from pen_plots import optimize_stroke_order
 
         strokes = [
             np.array([[0.0, 0.0], [1.0, 0.0]]),
