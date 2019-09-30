@@ -38,7 +38,16 @@ def search_card_by_name(card_name):
 
 
 def get_image(image_uri):
-    return download_cached(image_uri, image_uri.split('/')[-1].split('?')[0])
+    """
+    Downloads card artwork. Uses cache and Scryfall API call rate limiter.
+    Returns
+    -------
+    path
+        of cached file. As string for compatiblity with OpenCV.
+    """
+    split = image_uri.split('/')
+    file_name = split[-5] + '_' + split[-4] + '_' + split[-1].split('?')[0]
+    return str(download_cached(image_uri, file_name))  # Return str for compatiblity with cv2
 
 
 def download_cached(url, file_name=None):
